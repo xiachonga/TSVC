@@ -1,6 +1,7 @@
 CC = gcc
 
-flags = -std=c99 -O3 -fivopts -flax-vector-conversions -funsafe-math-optimizations -msse4.2 -Wall -Werror
+# flags = -std=c99 -O3 -fivopts -flax-vector-conversions -funsafe-math-optimizations -msse4.2 -Wall -Werror
+flags = -std=c99 -O3 -fivopts -flax-vector-conversions -funsafe-math-optimizations -Wall # -Werror
 vecflags = -ftree-vectorizer-verbose=1
 novecflags = -fno-tree-vectorize
 libs = -lm

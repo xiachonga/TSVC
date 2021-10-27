@@ -14,9 +14,6 @@ int vbor()
 	start_t = clock();
 
 	float a1, b1, c1, d1, e1, f1;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes*10; nl++) {
 		for (int i = 0; i < LEN2; i++) {
 			a1 = a[i];
@@ -40,9 +37,6 @@ int vbor()
 	clock_dif_sec = (double) (clock_dif/1000000.0);
 	printf("vbor\t %.2f \t\t", clock_dif_sec);;
 	temp = 0.;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int i = 0; i < LEN; i++){
 		temp += x[i];
 	}

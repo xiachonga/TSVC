@@ -41,7 +41,6 @@
 #include <malloc.h>
 #include <string.h>
 #include <assert.h>
-#include <xmmintrin.h>
 
 //#include <builtins.h>
 

@@ -1,5 +1,13 @@
 #include "common.h"
 
+float test(float* A){
+  float s = (float)0.0;
+//  #pragma nosimd
+  for (int i = 0; i < 4; i++)
+    s += A[i];
+  return s;
+}
+
 int s31111()
 {
 

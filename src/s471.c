@@ -1,5 +1,11 @@
 #include "common.h"
 
+inline int s471s(void)
+{
+// --  dummy subroutine call made in s471
+	return 0;
+}
+
 int s471(){
 
 //	call statements
