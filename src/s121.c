@@ -6,7 +6,7 @@ int s121()
 //	induction variable recognition
 //	loop with possible ambiguity because of scalar store
 
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 
 
 	init( "s121 ");
@@ -24,8 +24,7 @@ int s121()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S121\t %.2f \t\t", clock_dif_sec);;
+	printf("S121\t %8ld \t ", clock_dif);
 	check(1);
 	return 0;
 }

@@ -6,7 +6,7 @@ int s221()
 //	loop distribution
 //	loop that is partially recursive
 
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 
 
 	init( "s221 ");
@@ -23,8 +23,7 @@ int s221()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S221\t %.2f \t\t", clock_dif_sec);;
+	printf("S221\t %8ld \t ", clock_dif);
 	check(12);
 	return 0;
 }

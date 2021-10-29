@@ -7,7 +7,7 @@ int s114()
 //	transpose vectorization
 //	Jump in data access - not vectorizable
 
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 
 
 	init( "s114 ");
@@ -26,8 +26,7 @@ int s114()
 	}
 
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S114\t %.2f \t\t", clock_dif_sec);;
+	printf("S114\t %8ld \t ", clock_dif);
 	check(11);
 	return 0;
 }

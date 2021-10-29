@@ -9,7 +9,7 @@ int s422()
 
 	xx = array + 4;
 	set1d(xx, 0., 1);
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 	init( "s422 ");
 	start_t = clock();
 
@@ -24,8 +24,7 @@ int s422()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S422\t %.2f \t\t", clock_dif_sec);;
+	printf("S422\t %8ld \t ", clock_dif);
 	temp = 0;
 	#pragma clang loop unroll(disable)
 	#pragma clang loop interleave(disable)

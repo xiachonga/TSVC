@@ -6,7 +6,7 @@ int s272(float t)
 //	control flow
 //	loop with independent conditional
 
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 
 
 	init( "s272 ");
@@ -25,8 +25,7 @@ int s272(float t)
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S272\t %.2f \t\t", clock_dif_sec);;
+	printf("S272\t %8ld \t ", clock_dif);
 	check(12);
 	return 0;
 }

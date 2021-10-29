@@ -10,7 +10,7 @@ int s424()
 	int vl = 63;
 	xx = array + vl;
 	set1d(xx, 0., 1);
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 	init( "s424 ");
 	start_t = clock();
 	#pragma clang loop unroll(disable)
@@ -23,8 +23,7 @@ int s424()
 		dummy(a, b, c, d, e, aa, bb, cc, 1.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S424\t %.2f \t\t", clock_dif_sec);;
+	printf("S424\t %8ld \t ", clock_dif);
 	temp = 0.;
 	#pragma clang loop unroll(disable)
 	#pragma clang loop interleave(disable)

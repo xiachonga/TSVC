@@ -6,7 +6,7 @@ int s2244()
 //	node splitting
 //	cycle with ture and anti dependency
 
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 
 
 	init( "s244 ");
@@ -22,8 +22,7 @@ int s2244()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S2244\t %.2f \t\t", clock_dif_sec);;
+	printf("S2244\t %8ld \t ", clock_dif);
 	check(12);
 	return 0;
 }

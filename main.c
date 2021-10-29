@@ -761,7 +761,7 @@ int main(){
 	int* ip = (int *) memalign(16, LEN*sizeof(float));
 	float s1,s2;
 	set(ip, &s1, &s2);
-	printf("Loop \t Time(Sec) \t Checksum \n");
+	printf("Loop \t Time(us) \t Checksum \n");
 	fflush(stdout);
 	s000();		fflush(stdout);
 	s111();		fflush(stdout);

@@ -7,7 +7,7 @@ int s161()
 //	tests for recognition of loop independent dependences
 //	between statements in mutually exclusive regions.
 
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 
 
 	init( "s161 ");
@@ -31,8 +31,7 @@ L10:
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S161\t %.2f \t\t", clock_dif_sec);;
+	printf("S161\t %8ld \t ", clock_dif);
 	check(13);
 	return 0;
 }

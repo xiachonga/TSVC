@@ -7,7 +7,7 @@ int vbor()
 //	basic operations rates, isolate arithmetic from memory traffic
 //	all combinations of three, 59 flops for 6 loads and 1 store.
 
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 
 
 	init( "vbor ");
@@ -34,8 +34,7 @@ int vbor()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("vbor\t %.2f \t\t", clock_dif_sec);;
+	printf("vbor\t %8ld \t ", clock_dif);
 	temp = 0.;
 	for (int i = 0; i < LEN; i++){
 		temp += x[i];

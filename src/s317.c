@@ -8,7 +8,7 @@ int s317()
 //	1. scalar expansion of factor, and product reduction
 //	2. closed form solution: q = factor**n
 
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 
 
 	init( "s317 ");
@@ -26,8 +26,7 @@ int s317()
 		dummy(a, b, c, d, e, aa, bb, cc, q);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S317\t %.2f \t\t", clock_dif_sec);;
+	printf("S317\t %8ld \t ", clock_dif);
 	temp = q;
 	check(-1);
 	return 0;

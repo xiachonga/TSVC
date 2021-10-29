@@ -6,7 +6,7 @@ int s3112()
 //	reductions
 //	sum reduction saving running sums
 
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 
 
 	init( "s3112");
@@ -25,8 +25,7 @@ int s3112()
 		dummy(a, b, c, d, e, aa, bb, cc, sum);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S3112\t %.2f \t\t", clock_dif_sec);;
+	printf("S3112\t %8ld \t ", clock_dif);
 	temp = sum;
 	check(-12);
 	return 0;

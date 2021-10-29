@@ -7,7 +7,7 @@ int s1421()
 //	equivalence- no overlap
 
 	set1d(xx, 1., 1);
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 	init( "s421 ");
 	start_t = clock();
 
@@ -22,8 +22,7 @@ int s1421()
 		dummy(a, b, c, d, e, aa, bb, cc, 1.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S1421\t %.2f \t\t", clock_dif_sec);;
+	printf("S1421\t %8ld \t ", clock_dif);
 	temp = 0;
 	for (int i = 0; i < LEN/2; i++){
 		temp += xx[i];

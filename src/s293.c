@@ -6,7 +6,7 @@ int s293()
 //	loop peeling
 //	a(i)=a(0) with actual dependence cycle, loop is vectorizable
 
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 
 	init( "s293 ");
 	start_t = clock();
@@ -21,8 +21,7 @@ int s293()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S293\t %.2f \t\t", clock_dif_sec);;
+	printf("S293\t %8ld \t ", clock_dif);
 	check(1);
 	return 0;
 }

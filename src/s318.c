@@ -7,7 +7,7 @@ int s318( int inc)
 //	isamax, max absolute value, increments not equal to 1
 
 
-	clock_t start_t, end_t, clock_dif; double clock_dif_sec;
+	clock_t start_t, end_t, clock_dif;
 
 
 	init( "s318 ");
@@ -36,8 +36,7 @@ L5:
 		dummy(a, b, c, d, e, aa, bb, cc, chksum);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	clock_dif_sec = (double) (clock_dif/1000000.0);
-	printf("S318\t %.2f \t\t", clock_dif_sec);;
+	printf("S318\t %8ld \t ", clock_dif);
 	temp = max + index+1;
 	check(-1);
 	return 0;
