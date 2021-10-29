@@ -47,28 +47,29 @@ def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
         cfiles = [os.path.join(root, file) for file in files if file[-1] == "c"]
         cfiles.sort()
 
-    count = 0
-    sve_count = 0
-    neon_count = 0
+    vec_list = []
+    sve_list = []
+    neon_list = []
     for file in cfiles:
         res = compile(CC, flags, file, exe)
         if gcc:
             if "vectorized" in res:
-                count += 1
+                vec_list.append(file)
                 if "variable length vectors" in res:
-                    sve_count += 1
+                    sve_list.append(file)
                 if "byte vectors" in res:
-                    neon_count += 1
+                    neon_list.append(file)
         else:
             pass
     print("Total loops:           {0:3d}".format(len(cfiles)))
-    print("Vectorized loops:      {0:3d}".format(count))
+    print("Vectorized loops:      {0:3d}".format(len(vec_list)))
     if sve:
-        print("SVE vectorized loops:  {0:3d}".format(sve_count))
-        print("Neon vectorized loops: {0:3d}".format(neon_count))
+        print("SVE vectorized loops:  {0:3d}".format(len(sve_list)))
+        print("Neon vectorized loops: {0:3d}".format(len(neon_list)))
 
     if not exe:
-        return
+        return vec_list, sve_list, neon_list
+
     flags.append("-fno-tree-vectorize")
     compile(CC, flags, "./dummy.c")
     compile(CC, flags, "./main.c")
@@ -102,14 +103,14 @@ def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
         print("Error:")
         print(" ".join(cmd))
         exit(-1)
-    pass
+    return vec_list, sve_list, neon_list
 
 
 if __name__ == "__main__":
-    print("x64 gcc:")
+    print("# x64 gcc:")
     test("gcc", exe=True, x64=True)
-    print("aarch64 gcc neon:")
+    print("# aarch64 gcc neon:")
     test("aarch64-none-linux-gnu-gcc", sve=False, exe=True)
-    print("aarch64 gcc sve:")
+    print("# aarch64 gcc sve:")
     test("aarch64-none-linux-gnu-gcc", exe=True)
 
