@@ -20,6 +20,8 @@ def compile(CC, flags, file, object=True):
 
 
 def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
+    if x64:
+        sve = False
     flags = []
     # common flags
     flags.append("-std=c99")
@@ -73,7 +75,7 @@ def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
     # link
     flags = []
     flags.append("-O0")
-    flags.append("-lm")
+    flags.append("-static")
     cmd = [CC]
     cmd.extend(flags)
     cmd.append("-o")
@@ -92,6 +94,7 @@ def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
     ofiles.append("./dummy.o")
     ofiles.append("./main.o")
     cmd.extend(ofiles)
+    cmd.append("-lm")
 
     try:
         proc = subprocess.run(cmd, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=True)
@@ -103,6 +106,10 @@ def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
 
 
 if __name__ == "__main__":
+    print("x64 gcc:")
     test("gcc", exe=True, x64=True)
-    test("aarch64-linux-gnu-gcc", sve=False, exe=True)
-    test("aarch64-linux-gnu-gcc", exe=True)
+    print("aarch64 gcc neon:")
+    test("aarch64-none-linux-gnu-gcc", sve=False, exe=True)
+    print("aarch64 gcc sve:")
+    test("aarch64-none-linux-gnu-gcc", exe=True)
+
