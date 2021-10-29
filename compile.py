@@ -70,7 +70,7 @@ def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
     if not exe:
         return vec_list, sve_list, neon_list
 
-    flags.append("-fno-tree-vectorize")
+    # flags.append("-fno-tree-vectorize")
     compile(CC, flags, "./dummy.c")
     compile(CC, flags, "./main.c")
     # link
