@@ -12,9 +12,6 @@ int s2101()
 
 	init( "s2101");
 	start_t = clock();
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 10*ntimes; nl++) {
 		for (int i = 0; i < LEN2; i++) {
 			aa[i][i] += bb[i][i] * cc[i][i];

@@ -15,9 +15,6 @@ int s3110()
 
 	int xindex, yindex;
 	float max, chksum;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 100*(ntimes/(LEN2)); nl++) {
 		max = aa[(0)][0];
 		xindex = 0;

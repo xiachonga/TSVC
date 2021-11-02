@@ -12,9 +12,6 @@ int s321()
 	init( "s321 ");
 	start_t = clock();
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes; nl++) {
 		for (int i = 1; i < LEN; i++) {
 			a[i] += a[i-1] * b[i];

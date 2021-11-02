@@ -14,9 +14,6 @@ int s276()
 	start_t = clock();
 
 	int mid = (LEN/2);
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 4*ntimes; nl++) {
 		for (int i = 0; i < LEN; i++) {
 			if (i+1 < mid) {

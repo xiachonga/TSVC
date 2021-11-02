@@ -13,9 +13,6 @@ int s316()
 	start_t = clock();
 
 	float x;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes*5; nl++) {
 		x = a[0];
 		for (int i = 1; i < LEN; ++i) {

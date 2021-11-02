@@ -17,9 +17,6 @@ int s471(){
 
 	init( "s471 ");
 	start_t = clock();
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes/2; nl++) {
 		for (int i = 0; i < m; i++) {
 			x[i] = b[i] + d[i] * d[i];
@@ -31,9 +28,6 @@ int s471(){
 	end_t = clock(); clock_dif = end_t - start_t;
 	printf("S471\t %8ld \t ", clock_dif);
 	temp = 0.;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int i = 0; i < LEN; i++){
 		temp += x[i];
 	}

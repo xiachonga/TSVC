@@ -14,9 +14,6 @@ int s422()
 	start_t = clock();
 
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 8*ntimes; nl++) {
 		for (int i = 0; i < LEN; i++) {
 			xx[i] = array[i + 8] + a[i];
@@ -26,9 +23,6 @@ int s422()
 	end_t = clock(); clock_dif = end_t - start_t;
 	printf("S422\t %8ld \t ", clock_dif);
 	temp = 0;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int i = 0; i < LEN; i++){
 		temp += xx[i];
 	}

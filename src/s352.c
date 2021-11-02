@@ -13,9 +13,6 @@ int s352()
 	start_t = clock();
 
 	float dot;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 8*ntimes; nl++) {
 		dot = (float)0.;
 		for (int i = 0; i < LEN; i += 5) {

@@ -11,9 +11,6 @@ int s2712()
 
 	init( "s2712");
 	start_t = clock();
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 4*ntimes; nl++) {
 		for (int i = 0; i < LEN; i++) {
 			if (a[i] > b[i]) {

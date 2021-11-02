@@ -13,9 +13,6 @@ int s255()
 	start_t = clock();
 
 	float x, y;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes; nl++) {
 		x = b[LEN-1];
 		y = b[LEN-2];

@@ -14,9 +14,6 @@ int s292()
 	start_t = clock();
 
 	int im1, im2;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes; nl++) {
 		im1 = LEN-1;
 		im2 = LEN-2;

@@ -14,9 +14,6 @@ int s431()
 
 	init( "s431 ");
 	start_t = clock();
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes*10; nl++) {
 		for (int i = 0; i < LEN; i++) {
 			a[i] = a[i+k] + b[i];

@@ -14,9 +14,6 @@ int s141()
 	start_t = clock();
 
 	int k;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 200*(ntimes/LEN2); nl++) {
 		for (int i = 0; i < LEN2; i++) {
 			k = (i+1) * ((i+1) - 1) / 2 + (i+1)-1;

@@ -12,9 +12,6 @@ int s111()
 	init( "s111 ");
 	start_t = clock();
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 2*ntimes; nl++) {
 //		#pragma vector always
 		for (int i = 1; i < LEN; i += 2) {

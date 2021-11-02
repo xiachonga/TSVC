@@ -15,9 +15,6 @@ int s332( float t)
 	int index;
 	float value;
 	float chksum;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes; nl++) {
 		index = -2;
 		value = -1.;

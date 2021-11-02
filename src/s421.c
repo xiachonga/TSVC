@@ -11,9 +11,6 @@ int s421()
 	init( "s421 ");
 	start_t = clock();
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 4*ntimes; nl++) {
 		yy = xx;
 		for (int i = 0; i < LEN - 1; i++) {
@@ -24,9 +21,6 @@ int s421()
 	end_t = clock(); clock_dif = end_t - start_t;
 	printf("S421\t %8ld \t ", clock_dif);
 	temp = 0;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int i = 0; i < LEN; i++){
 		temp += xx[i];
 	}

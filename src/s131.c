@@ -12,9 +12,6 @@ int s131()
 	start_t = clock();
 
 	int m  = 1;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 5*ntimes; nl++) {
 		for (int i = 0; i < LEN - 1; i++) {
 			a[i] = a[i + m] + b[i];

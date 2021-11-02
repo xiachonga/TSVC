@@ -12,9 +12,6 @@ int s232()
 	init( "s232 ");
 	start_t = clock();
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 100*(ntimes/(LEN2)); nl++) {
 		for (int j = 1; j < LEN2; j++) {
 			for (int i = 1; i <= j; i++) {

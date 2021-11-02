@@ -15,9 +15,6 @@ int s4116(int* __restrict__ ip, int j, int inc)
 
 	float sum;
 	int off;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable) 
 	for (int nl = 0; nl < 100*ntimes; nl++) {
 		sum = 0.;
 		for (int i = 0; i < LEN2-1; i++) {

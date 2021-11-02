@@ -10,9 +10,6 @@ int s2111()
 
 	init( "s2111");
 	start_t = clock();
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 100*(ntimes/(LEN2)); nl++) {
 		for (int j = 1; j < LEN2; j++) {
 			for (int i = 1; i < LEN2; i++) {
@@ -24,9 +21,6 @@ int s2111()
 	end_t = clock(); clock_dif = end_t - start_t;
 	printf("S2111\t %8ld \t ", clock_dif);
 	temp = 0.;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int i = 0; i < LEN2; i++)
 		for (int j = 0; j < LEN2; j++)
 			temp += aa[i][j];

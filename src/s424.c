@@ -13,9 +13,6 @@ int s424()
 	clock_t start_t, end_t, clock_dif;
 	init( "s424 ");
 	start_t = clock();
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 4*ntimes; nl++) {
 		for (int i = 0; i < LEN - 1; i++) {
 			xx[i+1] = array[i] + a[i];
@@ -25,9 +22,6 @@ int s424()
 	end_t = clock(); clock_dif = end_t - start_t;
 	printf("S424\t %8ld \t ", clock_dif);
 	temp = 0.;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int i = 0; i < LEN; i++){
 		temp += xx[i];
 	}

@@ -11,9 +11,6 @@ int s2251()
 
 	init( "s251 ");
 	start_t = clock();
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes; nl++) {
 		float s = (float)0.0;
 		for (int i = 0; i < LEN; i++) {

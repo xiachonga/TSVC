@@ -13,9 +13,6 @@ int s261()
 	start_t = clock();
 
 	float t;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes; nl++) {
 		for (int i = 1; i < LEN; ++i) {
 			t = a[i] + b[i];

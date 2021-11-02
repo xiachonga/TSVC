@@ -14,9 +14,6 @@ int s343()
 	start_t = clock();
 
 	int k;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 10*(ntimes/LEN2); nl++) {
 		k = -1;
 		for (int i = 0; i < LEN2; i++) {

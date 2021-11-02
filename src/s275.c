@@ -12,9 +12,6 @@ int s275()
 	init( "s275 ");
 	start_t = clock();
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 10*(ntimes/LEN2); nl++) {
 		for (int i = 0; i < LEN2; i++) {
 			if (aa[0][i] > (float)0.) {

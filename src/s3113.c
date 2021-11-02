@@ -13,9 +13,6 @@ int s3113()
 	start_t = clock();
 
 	float max;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes*4; nl++) {
 		max = abs(a[0]);
 		for (int i = 0; i < LEN; i++) {

@@ -14,9 +14,6 @@ int s353(int* __restrict__ ip)
 	start_t = clock();
 
 	float alpha = c[0];
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes; nl++) {
 		for (int i = 0; i < LEN; i += 5) {
 			a[i] += alpha * b[ip[i]];

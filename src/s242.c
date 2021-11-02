@@ -11,9 +11,6 @@ int s242(float s1, float s2)
 	init( "s242 ");
 	start_t = clock();
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes/5; nl++) {
 		for (int i = 1; i < LEN; ++i) {
 			a[i] = a[i - 1] + s1 + s2 + b[i] + c[i] + d[i];

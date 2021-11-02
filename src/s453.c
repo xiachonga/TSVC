@@ -11,9 +11,6 @@ int s453()
 
 	init( "s453 ");
 	start_t = clock();
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes*2; nl++) {
 		s = 0.;
 		for (int i = 0; i < LEN; i++) {

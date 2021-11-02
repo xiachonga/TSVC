@@ -11,9 +11,6 @@ int s172( int n1, int n3)
 	init( "s172 ");
 	start_t = clock();
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes; nl++) {
 		for (int i = n1-1; i < LEN; i += n3) {
 			a[i] += b[i];

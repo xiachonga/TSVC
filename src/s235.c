@@ -12,9 +12,6 @@ int s235()
 	init( "s235 ");
 	start_t = clock();
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 200*(ntimes/LEN2); nl++) {
 		for (int i = 0; i < LEN2; i++) {
 			a[i] += b[i] * c[i];

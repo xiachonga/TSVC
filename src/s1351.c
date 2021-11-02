@@ -11,9 +11,6 @@ int s1351()
 	init( "s351 ");
 	start_t = clock();
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 8*ntimes; nl++) {
 		float* __restrict__ A = a;
 		float* __restrict__ B = b;

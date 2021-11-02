@@ -11,9 +11,6 @@ int s2244()
 
 	init( "s244 ");
 	start_t = clock();
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes; nl++) {
 		for (int i = 0; i < LEN-1; i++) {
 			a[i+1] = b[i] + e[i];

@@ -12,9 +12,6 @@ int s4117()
 	init( "s4117");
 	start_t = clock();
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes; nl++) {
 		for (int i = 0; i < LEN; i++) {
 			a[i] = b[i] + c[i/2] * d[i];

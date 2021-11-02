@@ -16,9 +16,6 @@ int s315()
 
 	float x, chksum;
 	int index;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes; nl++) {
 		x = a[0];
 		index = 0;

@@ -13,9 +13,6 @@ int s132()
 	int m = 0;
 	int j = m;
 	int k = m+1;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 400*ntimes; nl++) {
 		for (int i= 1; i < LEN2; i++) {
 			aa[j][i] = aa[k][i-1] + b[i] * c[1];

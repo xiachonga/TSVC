@@ -11,9 +11,6 @@ int s1112()
 
 	init("s112 ");
 	start_t = clock();
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes*3; nl++) {
 		for (int i = LEN - 1; i >= 0; i--) {
 			a[i] = b[i] + (float) 1.;

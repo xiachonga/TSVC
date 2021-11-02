@@ -17,9 +17,6 @@ int s151()
 	init( "s151 ");
 	start_t = clock();
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 5*ntimes; nl++) {
 		s151s(a, b,  1);
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);

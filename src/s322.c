@@ -12,9 +12,6 @@ int s322()
 	init( "s322 ");
 	start_t = clock();
 
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes/2; nl++) {
 		for (int i = 2; i < LEN; i++) {
 			a[i] = a[i] + a[i - 1] * b[i] + a[i - 2] * c[i];

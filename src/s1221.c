@@ -10,9 +10,6 @@ int s1221()
 
 	init( "s221 ");
 	start_t = clock();
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < ntimes; nl++) {
 		for (int i = 4; i < LEN; i++) {
 			b[i] = b[i - 4] + a[i];

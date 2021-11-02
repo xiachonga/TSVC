@@ -15,9 +15,6 @@ int s317()
 	start_t = clock();
 
 	float q;
-	#pragma clang loop unroll(disable)
-	#pragma clang loop interleave(disable)
-	#pragma clang loop vectorize_width(4, scalable)
 	for (int nl = 0; nl < 5*ntimes; nl++) {
 		q = (float)1.;
 		for (int i = 0; i < LEN/2; i++) {
