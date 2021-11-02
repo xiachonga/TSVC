@@ -101,6 +101,26 @@ def print_vec_info(vec_loops, sve_loops=None, neon_loops=None):
     print("Neon vectorized loops: {0:3d}".format(len(neon_loops)))
 
 
+def delete_unvec_loops(vec_loops):
+    with open("./main.c", "r") as f:
+        lines = f.readlines()
+    with open("./main.2.c", "w") as f:
+        main = False
+        for line in lines:
+            if not main:
+                f.write(line)
+                if "main" in line:
+                    main = True
+                continue
+            items = line.split()
+            if len(items) != 0:
+                items = items[0].split("(")
+                if items[0] in loops and items[0] not in vec_loops:
+                    line = "// " + line
+            f.write(line)
+    return
+
+
 def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
     # compile all loops
     if gcc:
@@ -128,9 +148,15 @@ def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
     if info and vec:
         print_vec_info(vec_loops, sve_loops, neon_loops)
     if exe:
+        if not vec:
+            delete_unvec_loops(loops)
+        elif x64 or not sve:
+            delete_unvec_loops(vec_loops)
+        else:
+            delete_unvec_loops(sve_loops)
+        compile_one(CC, flags, "./main.2.c")
         # generate executable file
         compile_one(CC, flags, "./dummy.c")
-        compile_one(CC, flags, "./main.c")
         cmd = [CC]
         cmd.extend(link_flags)
         cmd.append("-o")
@@ -146,7 +172,7 @@ def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
             ofiles = [os.path.join(root, file) for file in files if file[-1] == "o"]
             ofiles.sort()
         ofiles.append("./dummy.o")
-        ofiles.append("./main.o")
+        ofiles.append("./main.2.o")
         cmd.extend(ofiles)
         cmd.append("-lm")
         run_cmd(cmd)
@@ -154,11 +180,10 @@ def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
 
 
 if __name__ == "__main__":
-    gen_repetitions()
-    # print("# x64 gcc:")
-    # compile("gcc", exe=True, x64=True)
-    # print("# aarch64 gcc neon:")
-    # compile("aarch64-linux-gnu-gcc", sve=False, exe=True)
-    # print("# aarch64 gcc sve:")
-    # compile("aarch64-linux-gnu-gcc", exe=True)
+    print("# x64 gcc:")
+    compile("gcc", exe=True, x64=True)
+    print("# aarch64 gcc neon:")
+    compile("aarch64-none-linux-gnu-gcc", sve=False, exe=True)
+    print("# aarch64 gcc sve:")
+    compile("aarch64-none-linux-gnu-gcc", exe=True)
     

@@ -21,7 +21,7 @@ int s000()
 		dummy((float*)X, (float*)Y, (float*)Z, (float*)U, (float*)V, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S000\t %6d   %8ld   ", REPETITIONS, clock_dif);
+	printf("S000\t %8d   %8ld   ", REPETITIONS, clock_dif);
 	check(1);
 	return 0;
 }

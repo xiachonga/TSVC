@@ -19,7 +19,7 @@ int s1421()
 		dummy(a, b, c, d, e, aa, bb, cc, 1.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S1421\t %6d   %8ld   ", REPETITIONS, clock_dif);
+	printf("S1421\t %8d   %8ld   ", REPETITIONS, clock_dif);
 	temp = 0;
 	for (int i = 0; i < LEN/2; i++){
 		temp += xx[i];

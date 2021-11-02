@@ -25,7 +25,7 @@ int s331()
 		dummy(a, b, c, d, e, aa, bb, cc, chksum);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S331\t %6d   %8ld   ", REPETITIONS, clock_dif);
+	printf("S331\t %8d   %8ld   ", REPETITIONS, clock_dif);
 	temp = j+1;
 	check(-1);
 	return 0;

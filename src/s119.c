@@ -23,7 +23,7 @@ int s119()
 	end_t = clock(); clock_dif = end_t - start_t;
 	
 	
-	printf("S119\t %6d   %8ld   ", REPETITIONS, clock_dif);
+	printf("S119\t %8d   %8ld   ", REPETITIONS, clock_dif);
 	check(11);
 	return 0;
 }

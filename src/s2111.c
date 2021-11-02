@@ -19,7 +19,7 @@ int s2111()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S2111\t %6d   %8ld   ", REPETITIONS, clock_dif);
+	printf("S2111\t %8d   %8ld   ", REPETITIONS, clock_dif);
 	temp = 0.;
 	for (int i = 0; i < LEN2; i++)
 		for (int j = 0; j < LEN2; j++)

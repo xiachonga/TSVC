@@ -27,7 +27,7 @@ L30:
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S278\t %6d   %8ld   ", REPETITIONS, clock_dif);
+	printf("S278\t %8d   %8ld   ", REPETITIONS, clock_dif);
 	check(123);
 	return 0;
 }

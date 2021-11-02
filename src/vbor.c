@@ -34,7 +34,7 @@ int vbor()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("vbor\t %6d   %8ld   ", REPETITIONS, clock_dif);
+	printf("vbor\t %8d   %8ld   ", REPETITIONS, clock_dif);
 	temp = 0.;
 	for (int i = 0; i < LEN; i++){
 		temp += x[i];
