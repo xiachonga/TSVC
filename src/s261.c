@@ -13,7 +13,7 @@ int s261()
 	start_t = clock();
 
 	float t;
-	for (int nl = 0; nl < ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		for (int i = 1; i < LEN; ++i) {
 			t = a[i] + b[i];
 			a[i] = t + c[i-1];
@@ -23,7 +23,7 @@ int s261()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S261\t %8ld \t ", clock_dif);
+	printf("S261\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(13);
 	return 0;
 }

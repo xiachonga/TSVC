@@ -11,7 +11,7 @@ int s1112()
 
 	init("s112 ");
 	start_t = clock();
-	for (int nl = 0; nl < ntimes*3; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		for (int i = LEN - 1; i >= 0; i--) {
 			a[i] = b[i] + (float) 1.;
 		}
@@ -19,7 +19,7 @@ int s1112()
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
 	
-	printf("S1112\t %8ld \t ", clock_dif);
+	printf("S1112\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(1);
 	return 0;
 }

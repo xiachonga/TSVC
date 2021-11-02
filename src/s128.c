@@ -14,7 +14,7 @@ int s128()
 	start_t = clock();
 
 	int j, k;
-	for (int nl = 0; nl < 2*ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		j = -1;
 		for (int i = 0; i < LEN/2; i++) {
 			k = j + 1;
@@ -25,7 +25,7 @@ int s128()
 		dummy(a, b, c, d, e, aa, bb, cc, 1.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S128\t %8ld \t ", clock_dif);
+	printf("S128\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(12);
 	return 0;
 }

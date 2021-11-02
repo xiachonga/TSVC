@@ -13,7 +13,7 @@ int s312()
 	start_t = clock();
 
 	float prod;
-	for (int nl = 0; nl < 10*ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		prod = (float)1.;
 		for (int i = 0; i < LEN; i++) {
 			prod *= a[i];
@@ -21,7 +21,7 @@ int s312()
 		dummy(a, b, c, d, e, aa, bb, cc, prod);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S312\t %8ld \t ", clock_dif);
+	printf("S312\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	temp = prod;
 	check(-1);
 	return 0;

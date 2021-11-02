@@ -14,7 +14,7 @@ int s13110()
 
 	int xindex, yindex;
 	float max, chksum;
-	for (int nl = 0; nl < 100*(ntimes/(LEN2)); nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		max = aa[(0)][0];
 		xindex = 0;
 		yindex = 0;
@@ -29,7 +29,7 @@ int s13110()
 		dummy(a, b, c, d, e, aa, bb, cc, chksum);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S13110\t %8ld \t ", clock_dif);
+	printf("S13110\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	temp = max + xindex+1 + yindex+1;
 	check(-1);
 	return 0;

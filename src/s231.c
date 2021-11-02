@@ -11,7 +11,7 @@ int s231()
 	init( "s231 ");
 	start_t = clock();
 
-	for (int nl = 0; nl < 100*(ntimes/LEN2); nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		for (int i = 0; i < LEN2; ++i) {
 			for (int j = 1; j < LEN2; j++) {
 				aa[j][i] = aa[j - 1][i] + bb[j][i];
@@ -20,7 +20,7 @@ int s231()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S231\t %8ld \t ", clock_dif);
+	printf("S231\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(11);
 	return 0;
 }

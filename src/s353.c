@@ -14,7 +14,7 @@ int s353(int* __restrict__ ip)
 	start_t = clock();
 
 	float alpha = c[0];
-	for (int nl = 0; nl < ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		for (int i = 0; i < LEN; i += 5) {
 			a[i] += alpha * b[ip[i]];
 			a[i + 1] += alpha * b[ip[i + 1]];
@@ -25,7 +25,7 @@ int s353(int* __restrict__ ip)
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S353\t %8ld \t ", clock_dif);
+	printf("S353\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(1);
 	return 0;
 }

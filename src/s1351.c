@@ -11,7 +11,7 @@ int s1351()
 	init( "s351 ");
 	start_t = clock();
 
-	for (int nl = 0; nl < 8*ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		float* __restrict__ A = a;
 		float* __restrict__ B = b;
 		float* __restrict__ C = c;
@@ -24,7 +24,7 @@ int s1351()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S1351\t %8ld \t ", clock_dif);
+	printf("S1351\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(1);
 	return 0;
 }

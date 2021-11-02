@@ -11,7 +11,7 @@ int s421()
 	init( "s421 ");
 	start_t = clock();
 
-	for (int nl = 0; nl < 4*ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		yy = xx;
 		for (int i = 0; i < LEN - 1; i++) {
 			xx[i] = yy[i+1] + a[i];
@@ -19,7 +19,7 @@ int s421()
 		dummy(a, b, c, d, e, aa, bb, cc, 1.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S421\t %8ld \t ", clock_dif);
+	printf("S421\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	temp = 0;
 	for (int i = 0; i < LEN; i++){
 		temp += xx[i];

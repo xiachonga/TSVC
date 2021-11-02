@@ -13,7 +13,7 @@ int s124()
 	start_t = clock();
 
 	int j;
-	for (int nl = 0; nl < ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		j = -1;
 		for (int i = 0; i < LEN; i++) {
 			if (b[i] > (float)0.) {
@@ -27,7 +27,7 @@ int s124()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S124\t %8ld \t ", clock_dif);
+	printf("S124\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(1);
 	return 0;
 }

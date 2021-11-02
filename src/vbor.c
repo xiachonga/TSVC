@@ -14,7 +14,7 @@ int vbor()
 	start_t = clock();
 
 	float a1, b1, c1, d1, e1, f1;
-	for (int nl = 0; nl < ntimes*10; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		for (int i = 0; i < LEN2; i++) {
 			a1 = a[i];
 			b1 = b[i];
@@ -34,7 +34,7 @@ int vbor()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("vbor\t %8ld \t ", clock_dif);
+	printf("vbor\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	temp = 0.;
 	for (int i = 0; i < LEN; i++){
 		temp += x[i];

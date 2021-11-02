@@ -728,7 +728,6 @@ int init(char* name)
 
 void set(int* ip, float* s1, float* s2){
 	xx = (float*) memalign(16, LEN*sizeof(float));
-	printf("\n");
 	for (int i = 0; i < LEN; i = i+5){
 		ip[i]	= (i+4);
 		ip[i+1] = (i+2);
@@ -761,7 +760,7 @@ int main(){
 	int* ip = (int *) memalign(16, LEN*sizeof(float));
 	float s1,s2;
 	set(ip, &s1, &s2);
-	printf("Loop \t Time(us) \t Checksum \n");
+	printf("Loop \t Repeat   Time(us)   Checksum\n");
 	fflush(stdout);
 	s000();		fflush(stdout);
 	s111();		fflush(stdout);

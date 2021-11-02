@@ -15,7 +15,7 @@ int s318( int inc)
 
 	int k, index;
 	float max, chksum;
-	for (int nl = 0; nl < ntimes/2; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		k = 0;
 		index = 0;
 		max = abs(a[0]);
@@ -33,7 +33,7 @@ L5:
 		dummy(a, b, c, d, e, aa, bb, cc, chksum);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S318\t %8ld \t ", clock_dif);
+	printf("S318\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	temp = max + index+1;
 	check(-1);
 	return 0;

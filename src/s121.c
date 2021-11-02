@@ -13,7 +13,7 @@ int s121()
 	start_t = clock();
 
 	int j;
-	for (int nl = 0; nl < 3*ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		for (int i = 0; i < LEN-1; i++) {
 			j = i + 1;
 			a[i] = a[j] + b[i];
@@ -21,7 +21,7 @@ int s121()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S121\t %8ld \t ", clock_dif);
+	printf("S121\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(1);
 	return 0;
 }

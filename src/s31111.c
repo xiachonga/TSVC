@@ -21,7 +21,7 @@ int s31111()
 	start_t = clock();
 
 	float sum;
-	for (int nl = 0; nl < 2000*ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		sum = (float)0.;
 		sum += test(a);
 		sum += test(&a[4]);
@@ -34,7 +34,7 @@ int s31111()
 		dummy(a, b, c, d, e, aa, bb, cc, sum);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S31111\t %8ld \t ", clock_dif);
+	printf("S31111\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(1);
 	return 0;
 }

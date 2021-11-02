@@ -13,7 +13,7 @@ int s3112()
 	start_t = clock();
 
 	float sum;
-	for (int nl = 0; nl < ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		sum = (float)0.0;
 		for (int i = 0; i < LEN; i++) {
 			sum += a[i];
@@ -22,7 +22,7 @@ int s3112()
 		dummy(a, b, c, d, e, aa, bb, cc, sum);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S3112\t %8ld \t ", clock_dif);
+	printf("S3112\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	temp = sum;
 	check(-12);
 	return 0;

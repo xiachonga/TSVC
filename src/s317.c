@@ -15,7 +15,7 @@ int s317()
 	start_t = clock();
 
 	float q;
-	for (int nl = 0; nl < 5*ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		q = (float)1.;
 		for (int i = 0; i < LEN/2; i++) {
 			q *= (float).99;
@@ -23,7 +23,7 @@ int s317()
 		dummy(a, b, c, d, e, aa, bb, cc, q);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S317\t %8ld \t ", clock_dif);
+	printf("S317\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	temp = q;
 	check(-1);
 	return 0;

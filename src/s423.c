@@ -12,14 +12,14 @@ int s423()
 	clock_t start_t, end_t, clock_dif;
 	init( "s423 ");
 	start_t = clock();
-	for (int nl = 0; nl < 4*ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		for (int i = 0; i < LEN - 1; i++) {
 			array[i+1] = xx[i] + a[i];
 		}
 		dummy(a, b, c, d, e, aa, bb, cc, 1.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S423\t %8ld \t ", clock_dif);
+	printf("S423\t %6d   %8ld   ", REPETITIONS, clock_dif);
 
 	temp = 0.;
 	for (int i = 0; i < LEN; i++){

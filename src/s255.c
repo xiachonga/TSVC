@@ -13,7 +13,7 @@ int s255()
 	start_t = clock();
 
 	float x, y;
-	for (int nl = 0; nl < ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		x = b[LEN-1];
 		y = b[LEN-2];
 		for (int i = 0; i < LEN; i++) {
@@ -24,7 +24,7 @@ int s255()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S255\t %8ld \t ", clock_dif);
+	printf("S255\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(1);
 	return 0;
 }

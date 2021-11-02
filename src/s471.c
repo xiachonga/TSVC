@@ -17,7 +17,7 @@ int s471(){
 
 	init( "s471 ");
 	start_t = clock();
-	for (int nl = 0; nl < ntimes/2; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		for (int i = 0; i < m; i++) {
 			x[i] = b[i] + d[i] * d[i];
 			s471s();
@@ -26,7 +26,7 @@ int s471(){
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S471\t %8ld \t ", clock_dif);
+	printf("S471\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	temp = 0.;
 	for (int i = 0; i < LEN; i++){
 		temp += x[i];

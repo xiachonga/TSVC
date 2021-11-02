@@ -15,7 +15,7 @@ int s332( float t)
 	int index;
 	float value;
 	float chksum;
-	for (int nl = 0; nl < ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		index = -2;
 		value = -1.;
 		for (int i = 0; i < LEN; i++) {
@@ -30,7 +30,7 @@ L20:
 		dummy(a, b, c, d, e, aa, bb, cc, chksum);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S332\t %8ld \t ", clock_dif);
+	printf("S332\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	temp = value;
 	check(-1);
 	return 0;

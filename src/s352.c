@@ -13,7 +13,7 @@ int s352()
 	start_t = clock();
 
 	float dot;
-	for (int nl = 0; nl < 8*ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		dot = (float)0.;
 		for (int i = 0; i < LEN; i += 5) {
 			dot = dot + a[i] * b[i] + a[i + 1] * b[i + 1] + a[i + 2]
@@ -22,7 +22,7 @@ int s352()
 		dummy(a, b, c, d, e, aa, bb, cc, dot);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S352\t %8ld \t ", clock_dif);
+	printf("S352\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	temp = dot;
 	check(-1);
 	return 0;

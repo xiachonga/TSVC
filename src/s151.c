@@ -17,12 +17,12 @@ int s151()
 	init( "s151 ");
 	start_t = clock();
 
-	for (int nl = 0; nl < 5*ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		s151s(a, b,  1);
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S151\t %8ld \t ", clock_dif);
+	printf("S151\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(1);
 	return 0;
 }

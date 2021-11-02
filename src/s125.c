@@ -13,7 +13,7 @@ int s125()
 	start_t = clock();
 
 	int k;
-	for (int nl = 0; nl < 100*(ntimes/(LEN2)); nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		k = -1;
 		for (int i = 0; i < LEN2; i++) {
 			for (int j = 0; j < LEN2; j++) {
@@ -24,7 +24,7 @@ int s125()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S125\t %8ld \t ", clock_dif);
+	printf("S125\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(0);
 	return 0;
 }

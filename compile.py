@@ -10,7 +10,6 @@ def run_cmd(cmd):
         print("Error:")
         print(" ".join(cmd))
         exit(-1)
-    pass
 
 
 def compile(CC, flags, file, object=True):
@@ -56,7 +55,7 @@ def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
     sve_list = []
     neon_list = []
     for file in cfiles:
-        res = compile(CC, flags, file, exe)
+        res = compile(CC, flags + ["-DREPETITIONS=32"], file, exe)
         if gcc:
             if "vectorized" in res:
                 vec_list.append(file)

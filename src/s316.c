@@ -13,7 +13,7 @@ int s316()
 	start_t = clock();
 
 	float x;
-	for (int nl = 0; nl < ntimes*5; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		x = a[0];
 		for (int i = 1; i < LEN; ++i) {
 			if (a[i] < x) {
@@ -23,7 +23,7 @@ int s316()
 		dummy(a, b, c, d, e, aa, bb, cc, x);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S316\t %8ld \t ", clock_dif);
+	printf("S316\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	temp = x;
 	check(-1);
 	return 0;

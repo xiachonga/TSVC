@@ -12,7 +12,7 @@ int s257()
 	init( "s257 ");
 	start_t = clock();
 
-	for (int nl = 0; nl < 10*(ntimes/LEN2); nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		for (int i = 1; i < LEN2; i++) {
 			for (int j = 0; j < LEN2; j++) {
 				a[i] = aa[j][i] - a[i-1];
@@ -22,7 +22,7 @@ int s257()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S257\t %8ld \t ", clock_dif);
+	printf("S257\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(111);
 	return 0;
 }

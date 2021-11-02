@@ -12,7 +12,7 @@ int s000()
 	init( "s000 ");
 	start_t = clock();
 
-	for (int nl = 0; nl < 2*ntimes; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		for (int i = 0; i < lll; i++) {
 			a[i] = b[i] + c[i];
 			X[i] = (Y[i] * Z[i])+(U[i]*V[i]);
@@ -21,7 +21,7 @@ int s000()
 		dummy((float*)X, (float*)Y, (float*)Z, (float*)U, (float*)V, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S000\t %8ld \t ", clock_dif);
+	printf("S000\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(1);
 	return 0;
 }

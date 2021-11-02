@@ -13,7 +13,7 @@ int s311()
 	start_t = clock();
 
 	float sum;
-	for (int nl = 0; nl < ntimes*10; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		sum = (float)0.;
 		for (int i = 0; i < LEN; i++) {
 			sum += a[i];
@@ -21,7 +21,7 @@ int s311()
 		dummy(a, b, c, d, e, aa, bb, cc, sum);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S311\t %8ld \t ", clock_dif);
+	printf("S311\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(1);
 	return 0;
 }

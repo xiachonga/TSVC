@@ -12,7 +12,7 @@ int s235()
 	init( "s235 ");
 	start_t = clock();
 
-	for (int nl = 0; nl < 200*(ntimes/LEN2); nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		for (int i = 0; i < LEN2; i++) {
 			a[i] += b[i] * c[i];
 			for (int j = 1; j < LEN2; j++) {
@@ -22,7 +22,7 @@ int s235()
 		dummy(a, b, c, d, e, aa, bb, cc, 0.);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S235\t %8ld \t ", clock_dif);
+	printf("S235\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	check(111);
 	return 0;
 }

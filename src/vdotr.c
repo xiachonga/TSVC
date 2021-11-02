@@ -13,7 +13,7 @@ int vdotr()
 	start_t = clock();
 
 	float dot;
-	for (int nl = 0; nl < ntimes*10; nl++) {
+	for (int nl = 0; nl < REPETITIONS; nl++) {
 		dot = 0.;
 		for (int i = 0; i < LEN; i++) {
 			dot += a[i] * b[i];
@@ -21,7 +21,7 @@ int vdotr()
 		dummy(a, b, c, d, e, aa, bb, cc, dot);
 	}
 	end_t = clock(); clock_dif = end_t - start_t;
-	printf("vdotr\t %8ld \t ", clock_dif);
+	printf("vdotr\t %6d   %8ld   ", REPETITIONS, clock_dif);
 	temp = dot;
 	check(-1);
 	return 0;
