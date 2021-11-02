@@ -1,14 +1,8 @@
 import os
 import subprocess
 
-def compile(CC, flags, file, object=True):
-    cmd = [CC]
-    cmd.extend(flags)
-    if object:
-        cmd.extend(["-c", "-o", file[0:file.rfind(".")] + ".o"])
-    else:
-        cmd.extend(["-S", "-o", file[0:file.rfind(".")] + ".s"])
-    cmd.append(file)
+
+def run_cmd(cmd):
     try:
         proc = subprocess.run(cmd, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=True)
         return proc.stdout
@@ -17,6 +11,17 @@ def compile(CC, flags, file, object=True):
         print(" ".join(cmd))
         exit(-1)
     pass
+
+
+def compile(CC, flags, file, object=True):
+    cmd = [CC]
+    cmd.extend(flags)
+    if object:
+        cmd.extend(["-c", "-o", file[0:file.rfind(".")] + ".o"])
+    else:
+        cmd.extend(["-S", "-o", file[0:file.rfind(".")] + ".s"])
+    cmd.append(file)
+    return run_cmd(cmd)
 
 
 def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
@@ -68,7 +73,7 @@ def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
         print("Neon vectorized loops: {0:3d}".format(len(neon_list)))
 
     if not exe:
-        return vec_list, sve_list, neon_list
+        return cfiles, vec_list, sve_list, neon_list
 
     # flags.append("-fno-tree-vectorize")
     compile(CC, flags, "./dummy.c")
@@ -96,14 +101,8 @@ def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
     ofiles.append("./main.o")
     cmd.extend(ofiles)
     cmd.append("-lm")
-
-    try:
-        proc = subprocess.run(cmd, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=True)
-    except subprocess.CalledProcessError:
-        print("Error:")
-        print(" ".join(cmd))
-        exit(-1)
-    return vec_list, sve_list, neon_list
+    run_cmd(cmd)
+    return cfiles, vec_list, sve_list, neon_list
 
 
 if __name__ == "__main__":
