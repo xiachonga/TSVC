@@ -2,7 +2,7 @@
 #pragma auto_inline(off)
 #endif
 
-#define LEN 4096
+#define LEN 32000
 #define LEN2 256
 
 #define ntimes 4096

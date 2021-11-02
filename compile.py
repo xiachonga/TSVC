@@ -2,6 +2,46 @@ import os
 import subprocess
 
 
+def get_repetitions():
+    repetitions = {}
+    with open("./repetitions.txt", "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            items = line.split()
+            repetitions[items[0]] = int(items[1])
+    return repetitions
+
+
+repetitions = get_repetitions()
+loops = [loop for loop in repetitions.keys()]
+loops.sort()
+
+
+def gen_repetitions(time=32000):
+    for i in range(3):
+        if i != 0:
+            for loop in loops:
+                repetitions[loop] *= 10
+        compile("aarch64-linux-gnu-gcc", exe=True, vec=False)
+        run_cmd(["scp", "./gcc-scalar.out", "arm-ubuntu:"])
+        res = run_cmd(["ssh", "arm-ubuntu", "./gcc-scalar.out"])
+        lines = res.split("\n")
+        avg = 0
+        for line in lines:
+            items = line.split()
+            if len(items) != 4 or items[0].lower() not in loops:
+                continue
+            items[0] = items[0].lower()
+            repetitions[items[0]] = max(1, int(time * int(items[1]) / int(items[2])))
+            avg += int(items[2])
+        print("{}: avg time {}us".format(i, avg / len(loops)))
+        with open("./repetitions.txt", "w") as f:
+            for loop in loops:
+                f.write("{}\t{}\n".format(loop, repetitions[loop]))
+    print(res)
+    return
+
+
 def run_cmd(cmd):
     try:
         proc = subprocess.run(cmd, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=True)
@@ -12,7 +52,7 @@ def run_cmd(cmd):
         exit(-1)
 
 
-def compile(CC, flags, file, object=True):
+def compile_one(CC, flags, file, object=True):
     cmd = [CC]
     cmd.extend(flags)
     if object:
@@ -23,9 +63,7 @@ def compile(CC, flags, file, object=True):
     return run_cmd(cmd)
 
 
-def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
-    if x64:
-        sve = False
+def get_gcc_flags(vec, sve, x64):
     flags = []
     # common flags
     flags.append("-std=c99")
@@ -34,122 +72,93 @@ def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
     # vectorize flags
     flags.append("-O3")
     flags.append("-funsafe-math-optimizations")
-    if not vec:
-        flags.append("-fno-tree-vectorize")
-    if gcc:
+    if vec:
         flags.append("-fopt-info-vec")
-    # sve flags
+    else:
+        flags.append("-fno-tree-vectorize")
+    # target triple flags
     if x64:
         flags.append("-march=native")
     elif sve:
         flags.append("-march=armv8.2-a+sve")
     else:
         flags.append("-march=armv8.2-a")
-    
-    cfiles = []
-    for root, _, files in os.walk("./src"):
-        cfiles = [os.path.join(root, file) for file in files if file[-1] == "c"]
-        cfiles.sort()
+    # link flags
+    link_flags = []
+    link_flags.append("-O0")
+    link_flags.append("-static")
+    return flags, link_flags
 
-    vec_list = []
-    sve_list = []
-    neon_list = []
-    for file in cfiles:
-        res = compile(CC, flags + ["-DREPETITIONS=32"], file, exe)
+
+def print_vec_info(vec_loops, sve_loops=None, neon_loops=None):
+    print("Total loops:           {0:3d}".format(len(loops)))
+    print("Vectorized loops:      {0:3d}".format(len(vec_loops)))
+    if sve_loops is None or neon_loops is None:
+        return
+    if len(sve_loops) == 0:
+        return
+    print("SVE vectorized loops:  {0:3d}".format(len(sve_loops)))
+    print("Neon vectorized loops: {0:3d}".format(len(neon_loops)))
+
+
+def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
+    # compile all loops
+    if gcc:
+        flags, link_flags = get_gcc_flags(vec, sve, x64)
+    outputs = []
+    flags.append("-DREPETITIONS=32")
+    for loop in loops:
+        flags[-1] = "-DREPETITIONS={}".format(repetitions[loop])
+        file = os.path.join("./src", loop + ".c")
+        outputs.append(compile_one(CC, flags, file, exe))
+    # get vectorization info
+    vec_loops = []
+    sve_loops = []
+    neon_loops = []
+    for loop, output in zip(loops, outputs):
         if gcc:
-            if "vectorized" in res:
-                vec_list.append(file)
-                if "variable length vectors" in res:
-                    sve_list.append(file)
-                if "byte vectors" in res:
-                    neon_list.append(file)
+            if "vectorized" in output:
+                vec_loops.append(loop)
+                if "variable length vectors" in output:
+                    sve_loops.append(loop)
+                if "byte vectors" in output:
+                    neon_loops.append(loop)
         else:
             pass
-    print("Total loops:           {0:3d}".format(len(cfiles)))
-    print("Vectorized loops:      {0:3d}".format(len(vec_list)))
-    if sve:
-        print("SVE vectorized loops:  {0:3d}".format(len(sve_list)))
-        print("Neon vectorized loops: {0:3d}".format(len(neon_list)))
-
-    if not exe:
-        return cfiles, vec_list, sve_list, neon_list
-
-    # flags.append("-fno-tree-vectorize")
-    compile(CC, flags, "./dummy.c")
-    compile(CC, flags, "./main.c")
-    # link
-    flags = []
-    flags.append("-O0")
-    flags.append("-static")
-    cmd = [CC]
-    cmd.extend(flags)
-    cmd.append("-o")
-    outfile = "gcc-" if gcc else "llvm-"
-    if not x64:
-        outfile += "scalar" if not vec else "sve" if sve else "neon"
-    else:
-        outfile += "x64" if not vec else "x64-vec"
-    outfile += ".out"
-    cmd.append(outfile)
-
-    ofiles = []
-    for root, _, files in os.walk("./src"):
-        ofiles = [os.path.join(root, file) for file in files if file[-1] == "o"]
-        ofiles.sort()
-    ofiles.append("./dummy.o")
-    ofiles.append("./main.o")
-    cmd.extend(ofiles)
-    cmd.append("-lm")
-    run_cmd(cmd)
-    return cfiles, vec_list, sve_list, neon_list
-
-
-def replace_ntimes(file, ntimes):
-    with open(file, "r") as f:
-        lines = f.readlines()
-    with open(file, "w") as f:
-        for line in lines:
-            if "int nl" in line:
-                pos1 = line.find("<")
-                pos2 = line.rfind(";")
-                line = line[:pos1 + 1] + " {}".format(ntimes) + line[pos2:]
-            f.write(line)
-    pass
-
-
-def tune_outloop():
-    cfiles = []
-    for root, _, files in os.walk("./src"):
-        cfiles = [os.path.join(root, file) for file in files if file[-1] == "c"]
-    ntimes = 1
-    uploops = cfiles
-    while len(uploops) != 0 and ntimes < 4096:
-        print("{:5d}\t{}".format(ntimes, len(uploops)))
-        for loop in uploops:
-            replace_ntimes(loop, ntimes)
-        test("gcc", exe=True, vec=False, x64=True)
-        res = run_cmd("./gcc-x64.out")
-        res = res.split("\n")
-        uploops = []
-        for line in res:
-            if len(line) == 0:
-                continue
-            if line[0] == "S" or line[0] == "v":
-                data = line.split()
-                if int(data[1]) < 12800:
-                    uploops.append(os.path.join("./src", data[0].lower() + ".c"))
-        if ntimes <= 3:
-            ntimes = ntimes + 1
+    if info and vec:
+        print_vec_info(vec_loops, sve_loops, neon_loops)
+    if exe:
+        # generate executable file
+        compile_one(CC, flags, "./dummy.c")
+        compile_one(CC, flags, "./main.c")
+        cmd = [CC]
+        cmd.extend(link_flags)
+        cmd.append("-o")
+        outfile = "gcc-" if gcc else "llvm-"
+        if x64:
+            outfile += "x64-vectorized" if vec else "x64-scalar"
         else:
-            ntimes = ntimes + ntimes // 3
-    pass
+            outfile += ("sve" if sve else "neon") if vec else "scalar"
+        outfile += ".out"
+        cmd.append(outfile)
+        ofiles = []
+        for root, _, files in os.walk("./src"):
+            ofiles = [os.path.join(root, file) for file in files if file[-1] == "o"]
+            ofiles.sort()
+        ofiles.append("./dummy.o")
+        ofiles.append("./main.o")
+        cmd.extend(ofiles)
+        cmd.append("-lm")
+        run_cmd(cmd)
+    return vec_loops, sve_loops, neon_loops
 
 
 if __name__ == "__main__":
-    print("# x64 gcc:")
-    test("gcc", exe=True, x64=True)
-    print("# aarch64 gcc neon:")
-    test("aarch64-none-linux-gnu-gcc", sve=False, exe=True)
-    print("# aarch64 gcc sve:")
-    test("aarch64-none-linux-gnu-gcc", exe=True)
-
+    gen_repetitions()
+    # print("# x64 gcc:")
+    # compile("gcc", exe=True, x64=True)
+    # print("# aarch64 gcc neon:")
+    # compile("aarch64-linux-gnu-gcc", sve=False, exe=True)
+    # print("# aarch64 gcc sve:")
+    # compile("aarch64-linux-gnu-gcc", exe=True)
+    
