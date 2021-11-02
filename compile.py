@@ -105,6 +105,47 @@ def test(CC, gcc=True, vec=True, sve=True, exe=False, x64=False):
     return cfiles, vec_list, sve_list, neon_list
 
 
+def replace_ntimes(file, ntimes):
+    with open(file, "r") as f:
+        lines = f.readlines()
+    with open(file, "w") as f:
+        for line in lines:
+            if "int nl" in line:
+                pos1 = line.find("<")
+                pos2 = line.rfind(";")
+                line = line[:pos1 + 1] + " {}".format(ntimes) + line[pos2:]
+            f.write(line)
+    pass
+
+
+def tune_outloop():
+    cfiles = []
+    for root, _, files in os.walk("./src"):
+        cfiles = [os.path.join(root, file) for file in files if file[-1] == "c"]
+    ntimes = 1
+    uploops = cfiles
+    while len(uploops) != 0 and ntimes < 4096:
+        print("{:5d}\t{}".format(ntimes, len(uploops)))
+        for loop in uploops:
+            replace_ntimes(loop, ntimes)
+        test("gcc", exe=True, vec=False, x64=True)
+        res = run_cmd("./gcc-x64.out")
+        res = res.split("\n")
+        uploops = []
+        for line in res:
+            if len(line) == 0:
+                continue
+            if line[0] == "S" or line[0] == "v":
+                data = line.split()
+                if int(data[1]) < 12800:
+                    uploops.append(os.path.join("./src", data[0].lower() + ".c"))
+        if ntimes <= 3:
+            ntimes = ntimes + 1
+        else:
+            ntimes = ntimes + ntimes // 3
+    pass
+
+
 if __name__ == "__main__":
     print("# x64 gcc:")
     test("gcc", exe=True, x64=True)
