@@ -62,7 +62,7 @@ int set1d(float arr[LEN], float value, int stride)
 	return 0;
 }
 
-int set1ds(int _n, float arr, float value, int stride)
+int set1ds(int _n, float* arr, float value, int stride)
 {
 	if (stride == -1) {
 		memcpy(arr, set1d_m1, _n * sizeof(float));
