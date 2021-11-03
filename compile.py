@@ -19,12 +19,13 @@ loops.sort()
 
 def gen_repetitions(time=32000):
     for i in range(3):
-        if i != 0:
-            for loop in loops:
+        for loop in loops:
+            if i != 0:
                 repetitions[loop] *= 10
-        compile("aarch64-linux-gnu-gcc", exe=True, vec=False)
-        run_cmd(["scp", "./gcc-scalar.out", "arm-ubuntu:"])
-        res = run_cmd(["ssh", "arm-ubuntu", "./gcc-scalar.out"])
+            else:
+                repetitions[loop] = 4
+        compile("aarch64-none-linux-gnu-gcc", exe=True, vec=False)
+        res = run_cmd(["./gcc-scalar.out"])
         lines = res.split("\n")
         avg = 0
         for line in lines:
@@ -32,7 +33,7 @@ def gen_repetitions(time=32000):
             if len(items) != 4 or items[0].lower() not in loops:
                 continue
             items[0] = items[0].lower()
-            repetitions[items[0]] = max(1, int(time * int(items[1]) / int(items[2])))
+            repetitions[items[0]] = max(1, int(time * int(items[1]) / max(1, int(items[2]))))
             avg += int(items[2])
         print("{}: avg time {}us".format(i, avg / len(loops)))
         with open("./repetitions.txt", "w") as f:
@@ -117,6 +118,8 @@ def delete_unvec_loops(vec_loops):
                 items = items[0].split("(")
                 if items[0] in loops and items[0] not in vec_loops:
                     line = "// " + line
+                elif items[0] == "s176":
+                    line = "// " + line
             f.write(line)
     return
 
@@ -180,8 +183,9 @@ def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
 
 
 if __name__ == "__main__":
-    print("# x64 gcc:")
-    compile("gcc", exe=True, x64=True)
+#    gen_repetitions()
+    print("# aarch64 gcc scalar:")
+    compile("aarch64-none-linux-gnu-gcc", vec=False, sve=False, exe=True)
     print("# aarch64 gcc neon:")
     compile("aarch64-none-linux-gnu-gcc", sve=False, exe=True)
     print("# aarch64 gcc sve:")
