@@ -23,6 +23,7 @@
  */
 
 #include "common.h"
+#include "string.h"
 
 __attribute__ ((aligned(16))) TYPE X[lll],Y[lll],Z[lll],U[lll],V[lll];
 
@@ -34,22 +35,24 @@ float temp;
 int temp_int;
 
 __attribute__((aligned(16))) float a[LEN],b[LEN],c[LEN],d[LEN],e[LEN],
-                                   aa[LEN2][LEN2],bb[LEN2][LEN2],cc[LEN2][LEN2],tt[LEN2][LEN2];
+								   aa[LEN2][LEN2],bb[LEN2][LEN2],cc[LEN2][LEN2],tt[LEN2][LEN2];
 
 int indx[LEN] __attribute__((aligned(16)));
 
 float* __restrict__ xx;
 float* yy;
 
+__attribute__((aligned(16))) float set1d_m1[LEN], set1d_m2[LEN], set2d_m1[LEN2][LEN2], set2d_m2[LEN2][LEN2];
+
 int set1d(float arr[LEN], float value, int stride)
 {
 	if (stride == -1) {
-		for (int i = 0; i < LEN; i++) {
-			arr[i] = 1. / (float) (i+1);
-		}
+		memcpy(arr, set1d_m1, LEN * sizeof(float));
 	} else if (stride == -2) {
+		memcpy(arr, set1d_m2, LEN * sizeof(float));
+	} else if (stride == 1) {
 		for (int i = 0; i < LEN; i++) {
-			arr[i] = 1. / (float) ((i+1) * (i+1));
+			arr[i] = value;
 		}
 	} else {
 		for (int i = 0; i < LEN; i += stride) {
@@ -59,18 +62,18 @@ int set1d(float arr[LEN], float value, int stride)
 	return 0;
 }
 
-int set1ds(int _n, float arr[LEN], float value, int stride)
+int set1ds(int _n, float arr, float value, int stride)
 {
 	if (stride == -1) {
-		for (int i = 0; i < LEN; i++) {
-			arr[i] = 1. / (float) (i+1);
-		}
+		memcpy(arr, set1d_m1, _n * sizeof(float));
 	} else if (stride == -2) {
-		for (int i = 0; i < LEN; i++) {
-			arr[i] = 1. / (float) ((i+1) * (i+1));
+		memcpy(arr, set1d_m2, _n * sizeof(float));
+	} else if (stride == 1)  {
+		for (int i = 0; i < _n; i++) {
+			arr[i] = value;
 		}
 	} else {
-		for (int i = 0; i < LEN; i += stride) {
+		for (int i = 0; i < _n; i += stride) {
 			arr[i] = value;
 		}
 	}
@@ -79,21 +82,11 @@ int set1ds(int _n, float arr[LEN], float value, int stride)
 
 int set2d(float arr[LEN2][LEN2], float value, int stride)
 {
-
 //  -- initialize two-dimensional arraysft
-
 	if (stride == -1) {
-		for (int i = 0; i < LEN2; i++) {
-			for (int j = 0; j < LEN2; j++) {
-				arr[i][j] = 1. / (float) (i+1);
-			}
-		}
+		memcpy(arr, set2d_m1, LEN2 * LEN2 * sizeof(float));
 	} else if (stride == -2) {
-		for (int i = 0; i < LEN2; i++) {
-			for (int j = 0; j < LEN2; j++) {
-				arr[i][j] = 1. / (float) ((i+1) * (i+1));
-			}
-		}
+		memcpy(arr, set2d_m2, LEN2 * LEN2 * sizeof(float));
 	} else {
 		for (int i = 0; i < LEN2; i++) {
 			for (int j = 0; j < LEN2; j += stride) {
@@ -251,12 +244,12 @@ int init(char* name)
 
 	if	(!strcmp(name, "s000 ")) {
 	  for (int i = 0; i < lll; i++) {
-            X[i] = 1+i;
-            Y[i] = 2+i;
-            Z[i] = 3+i;
-            U[i] = 4+i;
-            V[i] = 5+i;
-          }
+			X[i] = 1+i;
+			Y[i] = 2+i;
+			Z[i] = 3+i;
+			U[i] = 4+i;
+			V[i] = 5+i;
+		  }
 	} else if (!strcmp(name, "s111 ")) {
 		set1d(a, one,unit);
 		set1d(b, any,frac2);
@@ -304,13 +297,13 @@ int init(char* name)
 		set1d(d, any,frac);
 		set1d(e, any,frac);
 	} else if (!strcmp(name, "s125 ")) {
-		set1ds(LEN*LEN, array,zero,unit);
+		set1ds(LEN2*LEN2, array,zero,unit);
 		set2d(aa, one,unit);
 		set2d(bb,half,unit);
 		set2d(cc, two,unit);
 	} else if (!strcmp(name, "s126 ")) {
 		set2d(bb, one,unit);
-		set1ds(LEN*LEN,array,any,frac);
+		set1ds(LEN2*LEN2,array,any,frac);
 		set2d(cc, any,frac);
 	} else if (!strcmp(name, "s127 ")) {
 		set1d(a,zero,unit);
@@ -331,7 +324,7 @@ int init(char* name)
 		set1d(b, any,frac);
 		set1d(c, any,frac);
 	} else if (!strcmp(name, "s141 ")) {
-		set1ds(LEN*LEN,array, one,unit);
+		set1ds(LEN2*LEN2,array, one,unit);
 		set2d(bb, any,frac2);
 	} else if (!strcmp(name, "s151 ")) {
 		set1d(a, one,unit);
@@ -829,6 +822,17 @@ void set(int* ip, float* s1, float* s2){
 }
 
 int main(){
+	for (int i = 0; i < LEN; i++) {
+		set1d_m1[i] = 1. / (float) (i+1);
+		set1d_m2[i] = 1. / (float) ((i+1) * (i+1));
+	}
+	for (int i = 0; i < LEN2; i++) {
+		for (int j = 0; j < LEN2; j++) {
+			set2d_m1[i][j] = 1. / (float) (i+1);
+			set2d_m2[i][j] = 1. / (float) ((i+1) * (i+1));
+		}
+	}
+
 	int n1 = 1;
 	int n3 = 1;
 	int* ip = (int *) memalign(16, LEN*sizeof(float));
