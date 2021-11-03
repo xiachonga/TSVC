@@ -113,54 +113,128 @@ float sum1d(float arr[LEN])
 }
 
 void check(int name){
-
 	float suma = 0;
 	float sumb = 0;
 	float sumc = 0;
 	float sumd = 0;
 	float sume = 0;
-	for (int i = 0; i < LEN; i++){
-		suma += a[i];
-		sumb += b[i];
-		sumc += c[i];
-		sumd += d[i];
-		sume += e[i];
-	}
 	float sumaa = 0;
 	float sumbb = 0;
 	float sumcc = 0;
-	for (int i = 0; i < LEN2; i++){
-		for (int j = 0; j < LEN2; j++){
-			sumaa += aa[i][j];
-			sumbb += bb[i][j];
-			sumcc += cc[i][j];
-
-		}
-	}
 	float sumarray = 0;
-	for (int i = 0; i < LEN2*LEN2; i++){
-		sumarray += array[i];
+	if (name == 1)
+	{
+		for (int i = 0; i < LEN; i++)
+			suma += a[i];
+		printf("%f \n",suma);
 	}
-
-	if (name == 1) printf("%f \n",suma);
-	if (name == 2) printf("%f \n",sumb);
-	if (name == 3) printf("%f \n",sumc);
-	if (name == 4) printf("%f \n",sumd);
-	if (name == 5) printf("%f \n",sume);
-	if (name == 11) printf("%f \n",sumaa);
-	if (name == 22) printf("%f \n",sumbb);
-	if (name == 33) printf("%f \n",sumcc);
-	if (name == 0) printf("%f \n",sumarray);
-	if (name == 12) printf("%f \n",suma+sumb);
-	if (name == 25) printf("%f \n",sumb+sume);
-	if (name == 13) printf("%f \n",suma+sumc);
-	if (name == 123) printf("%f \n",suma+sumb+sumc);
-	if (name == 1122) printf("%f \n",sumaa+sumbb);
-	if (name == 112233) printf("%f \n",sumaa+sumbb+sumcc);
-	if (name == 111) printf("%f \n",sumaa+suma);
-	if (name == -1) printf("%f \n",temp);
-	if (name == -12) printf("%f \n",temp+sumb);
-
+	else if (name == 2)
+	{
+		for (int i = 0; i < LEN; i++)
+			sumb += b[i];
+		printf("%f \n",sumb);
+	}
+	else if (name == 3)
+	{
+		for (int i = 0; i < LEN; i++)
+			sumc += c[i];
+		printf("%f \n",sumc);
+	}
+	else if (name == 4)
+	{
+		for (int i = 0; i < LEN; i++)
+			sumd += d[i];
+		printf("%f \n",sumd);
+	}
+	else if (name == 5)
+	{
+		for (int i = 0; i < LEN; i++)
+			sume += e[i];
+		printf("%f \n",sume);
+	}
+	else if (name == 11)
+	{
+		for (int i = 0; i < LEN2; i++)
+			for (int j = 0; j < LEN2; j++)
+				sumaa += aa[i][j];
+		printf("%f \n",sumaa);
+	}
+	else if (name == 22)
+	{
+		for (int i = 0; i < LEN2; i++)
+			for (int j = 0; j < LEN2; j++)
+				sumbb += bb[i][j];
+		printf("%f \n",sumbb);
+	}
+	else if (name == 33)
+	{
+		for (int i = 0; i < LEN2; i++)
+			for (int j = 0; j < LEN2; j++)
+				sumcc += cc[i][j];
+		printf("%f \n",sumcc);
+	}
+	else if (name == 0)
+	{
+		for (int i = 0; i < LEN2*LEN2; i++)
+			sumarray += array[i];
+		printf("%f \n",sumarray);
+	}
+	else if (name == 12)
+	{
+		for (int i = 0; i < LEN; i++)
+			suma += (a[i] + b[i]);
+		printf("%f \n",suma);
+	}
+	else if (name == 25)
+	{
+		for (int i = 0; i < LEN; i++)
+			suma += (b[i] + e[i]);
+		printf("%f \n",suma);
+	}
+	else if (name == 13)
+	{
+		for (int i = 0; i < LEN; i++)
+			suma += (a[i] + c[i]);
+		printf("%f \n",suma);
+	}
+	else if (name == 123)
+	{
+		for (int i = 0; i < LEN; i++)
+			suma += (a[i] + b[i] + c[i]);
+		printf("%f \n",suma);
+	}
+	else if (name == 1122)
+	{
+		for (int i = 0; i < LEN2; i++)
+			for (int j = 0; j < LEN2; j++)
+				sumaa += (aa[i][j] + bb[i][j]);
+		printf("%f \n",sumaa);
+	}
+	else if (name == 112233)
+	{
+		for (int i = 0; i < LEN2; i++)
+			for (int j = 0; j < LEN2; j++)
+				sumaa += (aa[i][j] + bb[i][j] + cc[i][j]);
+		printf("%f \n",sumaa);
+	}
+	else if (name == 111)
+	{
+		for (int i = 0; i < LEN; i++)
+			suma += a[i];
+		for (int i = 0; i < LEN2; i++)
+			for (int j = 0; j < LEN2; j++)
+				sumaa += aa[i][j];
+		printf("%f \n",sumaa+suma);
+	}
+	else if (name == -1) printf("%f \n",temp);
+	else if (name == -12)
+	{
+		for (int i = 0; i < LEN; i++)
+			sumb += b[i];
+		printf("%f \n",temp+sumb);
+	}
+	else
+		printf("checksum not exist!\n");
 }
 
 int init(char* name)
