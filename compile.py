@@ -91,6 +91,41 @@ def get_gcc_flags(vec, sve, x64):
     return flags, link_flags
 
 
+def get_llvm_flags(vec, sve, x64):
+    flags = []
+    # common flags
+    flags.append("-std=c99")
+    flags.append("-w")
+    flags.append("-I./")
+    # vectorize flags
+    flags.append("-O3")
+    flags.append("-funsafe-math-optimizations")
+    if vec:
+        flags.append("-Rpass=loop")
+        flags.append("-Rpass-analysis=loop")
+    else:
+        flags.append("-fno-tree-vectorize")
+    # target triple flags
+    if x64:
+        flags.append("-march=native")
+    else:
+        flags.append("--target=aarch64-none-linux-gnu")
+        if sve:
+            flags.append("-march=armv8.2-a+sve")
+            flags.append("-mllvm")
+            flags.append("-scalable-vectorization=preferred")
+        else:
+            flags.append("-march=armv8.2-a")
+    # link flags
+    link_flags = []
+    # link_flags.append("-fuse-ld=lld")
+    # if not x64:
+    #     link_flags.append("--target=aarch64-none-linux-gnu")
+    link_flags.append("-O0")
+    link_flags.append("-static")
+    return flags, link_flags
+
+
 def print_vec_info(vec_loops, sve_loops=None, neon_loops=None):
     print("Total loops:           {0:3d}".format(len(loops)))
     print("Vectorized loops:      {0:3d}".format(len(vec_loops)))
@@ -128,6 +163,8 @@ def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
     # compile all loops
     if gcc:
         flags, link_flags = get_gcc_flags(vec, sve, x64)
+    else:
+        flags, link_flags = get_llvm_flags(vec, sve, x64)
     outputs = []
     flags.append("-DREPETITIONS=32")
     for loop in loops:
@@ -147,20 +184,28 @@ def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
                 if "byte vectors" in output:
                     neon_loops.append(loop)
         else:
-            pass
+            if "vectorization width" in output:
+                vec_loops.append(loop)
+                if "vectorization width: vscale" in output:
+                    sve_loops.append(loop)
+                if "vectorization width: 4" in output:
+                    neon_loops.append(loop)
+                if "vectorization width: 2" in output:
+                    neon_loops.append(loop)
     if info and vec:
         print_vec_info(vec_loops, sve_loops, neon_loops)
     if exe:
         if not vec:
-            delete_unvec_loops(loops)
+            main_loops = loops
         elif x64 or not sve:
-            delete_unvec_loops(vec_loops)
+            main_loops = vec_loops
         else:
-            delete_unvec_loops(sve_loops)
+            main_loops = sve_loops
+        delete_unvec_loops(main_loops)
         compile_one(CC, flags, "./main.2.c")
         # generate executable file
         compile_one(CC, flags, "./dummy.c")
-        cmd = [CC]
+        cmd = ["aarch64-none-linux-gnu-gcc"]
         cmd.extend(link_flags)
         cmd.append("-o")
         outfile = "gcc-" if gcc else "llvm-"
@@ -170,10 +215,7 @@ def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
             outfile += ("sve" if sve else "neon") if vec else "scalar"
         outfile += ".out"
         cmd.append(outfile)
-        ofiles = []
-        for root, _, files in os.walk("./src"):
-            ofiles = [os.path.join(root, file) for file in files if file[-1] == "o"]
-            ofiles.sort()
+        ofiles = [os.path.join("./src", loop + ".o") for loop in main_loops]
         ofiles.append("./dummy.o")
         ofiles.append("./main.2.o")
         cmd.extend(ofiles)
@@ -184,10 +226,35 @@ def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
 
 if __name__ == "__main__":
 #    gen_repetitions()
-    print("# aarch64 gcc scalar:")
-    compile("aarch64-none-linux-gnu-gcc", vec=False, sve=False, exe=True)
+    CC = "aarch64-none-linux-gnu-gcc"
+    print("# aarch64 gcc scalar")
+    compile(CC, vec=False, sve=False, exe=True)
     print("# aarch64 gcc neon:")
-    compile("aarch64-none-linux-gnu-gcc", sve=False, exe=True)
+    gcc_neon_loops, _, _ = compile(CC, sve=False, exe=True)
     print("# aarch64 gcc sve:")
-    compile("aarch64-none-linux-gnu-gcc", exe=True)
-    
+    _, gcc_sve_loops, _ = compile(CC, exe=True)
+    # llvm-project/llvm/lib/Transforms/Vectorize/LoopVectorize.cpp:5995
+    # return true;
+    # // return (CostA * B.Width.getKnownMinValue()) <
+    #           (CostB * A.Width.getKnownMinValue())
+    CC = "clang"
+    print("# aarch64 llvm scalar")
+    compile(CC, gcc=False, vec=False, sve=False, exe=True)
+    print("# aarch64 llvm neon:")
+    llvm_neon_loops, _, _ = compile(CC, gcc=False, sve=False, exe=True)
+    print("# aarch64 llvm sve:")
+    _, llvm_sve_loops, _ = compile(CC, gcc=False, exe=True)
+    print("\tGCC\t\tLLVM")
+    print("Loop\tNEON\tSVE\tNEON\tSVE")
+    for loop in loops:
+        print("{}\t{}\t{}\t{}\t{}".format(
+            loop,
+            loop in gcc_neon_loops, loop in gcc_sve_loops,
+            loop in llvm_neon_loops, loop in llvm_sve_loops))
+    # aarch64-linux-gcc 11.2.0
+    # clang 13.0.0
+    # 151 68 79 65 89
+    print("{}\t{}\t{}\t{}\t{}".format(
+        len(loops), len(gcc_neon_loops), len(gcc_sve_loops),
+        len(llvm_neon_loops), len(llvm_sve_loops)))
+
