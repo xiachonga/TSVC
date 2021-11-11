@@ -5,13 +5,13 @@ int s116()
 
 //	linear dependence testing
 
-	clock_t start_t, end_t, clock_dif;
+	uint64_t start_t, end_t, clock_dif;
 
 
 	init( "s116 ");
-	start_t = clock();
+	start_t = rdtsc();
 
-	for (int nl = 0; nl < REPETITIONS; nl++) {
+
 		for (int i = 0; i < LEN - 5; i += 5) {
 			a[i] = a[i + 1] * a[i];
 			a[i + 1] = a[i + 2] * a[i + 1];
@@ -19,10 +19,9 @@ int s116()
 			a[i + 3] = a[i + 4] * a[i + 3];
 			a[i + 4] = a[i + 5] * a[i + 4];
 		}
-		dummy(a, b, c, d, e, aa, bb, cc, 0.);
-	}
-	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S116\t %8d   %8ld   ", REPETITIONS, clock_dif);
+		
+	end_t = rdtsc(); clock_dif = end_t - start_t;
+	printf("S116\t %8ld   ", clock_dif);
 	check(1);
 	return 0;
 }

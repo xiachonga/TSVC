@@ -7,14 +7,14 @@ int vbor()
 //	basic operations rates, isolate arithmetic from memory traffic
 //	all combinations of three, 59 flops for 6 loads and 1 store.
 
-	clock_t start_t, end_t, clock_dif;
+	uint64_t start_t, end_t, clock_dif;
 
 
 	init( "vbor ");
-	start_t = clock();
+	start_t = rdtsc();
 
 	float a1, b1, c1, d1, e1, f1;
-	for (int nl = 0; nl < REPETITIONS; nl++) {
+
 		for (int i = 0; i < LEN2; i++) {
 			a1 = a[i];
 			b1 = b[i];
@@ -31,10 +31,9 @@ int vbor()
 			d1 = d1 * e1 * f1;
 			x[i] = a1 * b1 * c1 * d1;
 		}
-		dummy(a, b, c, d, e, aa, bb, cc, 0.);
-	}
-	end_t = clock(); clock_dif = end_t - start_t;
-	printf("vbor\t %8d   %8ld   ", REPETITIONS, clock_dif);
+		
+	end_t = rdtsc(); clock_dif = end_t - start_t;
+	printf("vbor\t %8ld   ", clock_dif);
 	temp = 0.;
 	for (int i = 0; i < LEN; i++){
 		temp += x[i];

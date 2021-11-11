@@ -7,14 +7,14 @@ int s292()
 //	wrap around variable, 2 levels
 //	similar to S291
 
-	clock_t start_t, end_t, clock_dif;
+	uint64_t start_t, end_t, clock_dif;
 
 
 	init( "s292 ");
-	start_t = clock();
+	start_t = rdtsc();
 
 	int im1, im2;
-	for (int nl = 0; nl < REPETITIONS; nl++) {
+
 		im1 = LEN-1;
 		im2 = LEN-2;
 		for (int i = 0; i < LEN; i++) {
@@ -22,10 +22,9 @@ int s292()
 			im2 = im1;
 			im1 = i;
 		}
-		dummy(a, b, c, d, e, aa, bb, cc, 0.);
-	}
-	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S292\t %8d   %8ld   ", REPETITIONS, clock_dif);
+		
+	end_t = rdtsc(); clock_dif = end_t - start_t;
+	printf("S292\t %8ld   ", clock_dif);
 	check(1);
 	return 0;
 }

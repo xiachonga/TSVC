@@ -6,22 +6,19 @@ int s000()
 //	linear dependence testing
 //	no dependence - vectorizable
 
-	clock_t start_t, end_t, clock_dif;
+	uint64_t start_t, end_t, clock_dif;
 
 
 	init( "s000 ");
-	start_t = clock();
+	start_t = rdtsc();
 
-	for (int nl = 0; nl < REPETITIONS; nl++) {
 		for (int i = 0; i < lll; i++) {
-			// a[i] = b[i] + c[i];
-			// X[i] = (Y[i] * Z[i])+(U[i]*V[i]);
+			a[i] = b[i] + c[i];
 			X[i] = Y[i] + 1;
 		}
-		dummy((float*)X, (float*)Y, (float*)Z, (float*)U, (float*)V, aa, bb, cc, 0.);
-	}
-	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S000\t %8d   %8ld   ", REPETITIONS, clock_dif);
+		
+	end_t = rdtsc(); clock_dif = end_t - start_t;
+	printf("S000\t %8ld   ", clock_dif);
 	check(1);
 	return 0;
 }

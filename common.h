@@ -21,6 +21,24 @@
 
 //#include <builtins.h>
 
+#include <stdint.h>
+
+inline uint64_t rdtsc(){
+#ifdef __clang__
+	return __builtin_readcyclecounter();
+#else
+#ifdef __aarch64__
+	uint64_t tsc;
+	__asm__ __volatile__ ("isb;mrs %0, PMCCNTR_EL0" : "=r" (tsc));
+	return tsc;
+#else
+	uint32_t lo,hi;
+	__asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
+	return ((uint64_t)hi << 32) | lo;
+#endif
+#endif
+}
+
 
 #define TYPE float
 

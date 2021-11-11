@@ -6,20 +6,19 @@ int s1112()
 //	linear dependence testing
 //	loop reversal
 
-	clock_t start_t, end_t, clock_dif;
+	uint64_t start_t, end_t, clock_dif;
 	
 
 	init("s112 ");
-	start_t = clock();
-	for (int nl = 0; nl < REPETITIONS; nl++) {
+	start_t = rdtsc();
+
 		for (int i = LEN - 1; i >= 0; i--) {
 			a[i] = b[i] + (float) 1.;
 		}
-		dummy(a, b, c, d, e, aa, bb, cc, 0.);
-	}
-	end_t = clock(); clock_dif = end_t - start_t;
+		
+	end_t = rdtsc(); clock_dif = end_t - start_t;
 	
-	printf("S1112\t %8d   %8ld   ", REPETITIONS, clock_dif);
+	printf("S1112\t %8ld   ", clock_dif);
 	check(1);
 	return 0;
 }

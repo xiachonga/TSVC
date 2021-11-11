@@ -6,14 +6,14 @@ int s126()
 //	induction variable recognition
 //	induction variable in two loops; recurrence in inner loop
 
-	clock_t start_t, end_t, clock_dif;
+	uint64_t start_t, end_t, clock_dif;
 
 
 	init( "s126 ");
-	start_t = clock();
+	start_t = rdtsc();
 
 	int k;
-	for (int nl = 0; nl < REPETITIONS; nl++) {
+
 		k = 1;
 		for (int i = 0; i < LEN2; i++) {
 			for (int j = 1; j < LEN2; j++) {
@@ -22,10 +22,9 @@ int s126()
 			}
 			++k;
 		}
-		dummy(a, b, c, d, e, aa, bb, cc, 0.);
-	}
-	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S126\t %8d   %8ld   ", REPETITIONS, clock_dif);
+		
+	end_t = rdtsc(); clock_dif = end_t - start_t;
+	printf("S126\t %8ld   ", clock_dif);
 	check(22);
 	return 0;
 }

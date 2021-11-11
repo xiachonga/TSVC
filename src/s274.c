@@ -6,13 +6,13 @@ int s274()
 //	control flow
 //	complex loop with dependent conditional
 
-	clock_t start_t, end_t, clock_dif;
+	uint64_t start_t, end_t, clock_dif;
 
 
 	init( "s274 ");
-	start_t = clock();
+	start_t = rdtsc();
 
-	for (int nl = 0; nl < REPETITIONS; nl++) {
+
 		for (int i = 0; i < LEN; i++) {
 			a[i] = c[i] + e[i] * d[i];
 			if (a[i] > (float)0.) {
@@ -21,10 +21,9 @@ int s274()
 				a[i] = d[i] * e[i];
 			}
 		}
-		dummy(a, b, c, d, e, aa, bb, cc, 0.);
-	}
-	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S274\t %8d   %8ld   ", REPETITIONS, clock_dif);
+		
+	end_t = rdtsc(); clock_dif = end_t - start_t;
+	printf("S274\t %8ld   ", clock_dif);
 	check(12);
 	return 0;
 }

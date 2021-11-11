@@ -14,14 +14,14 @@ int s31111()
 //	reductions
 //	sum reduction
 
-	clock_t start_t, end_t, clock_dif;
+	uint64_t start_t, end_t, clock_dif;
 
 
 	init( "s311 ");
-	start_t = clock();
+	start_t = rdtsc();
 
 	float sum;
-	for (int nl = 0; nl < REPETITIONS; nl++) {
+
 		sum = (float)0.;
 		sum += test(a);
 		sum += test(&a[4]);
@@ -31,10 +31,9 @@ int s31111()
 		sum += test(&a[20]);
 		sum += test(&a[24]);
 		sum += test(&a[28]);
-		dummy(a, b, c, d, e, aa, bb, cc, sum);
-	}
-	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S31111\t %8d   %8ld   ", REPETITIONS, clock_dif);
+		
+	end_t = rdtsc(); clock_dif = end_t - start_t;
+	printf("S31111\t %8ld   ", clock_dif);
 	check(1);
 	return 0;
 }

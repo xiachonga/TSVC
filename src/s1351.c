@@ -5,13 +5,12 @@ int s1351()
 
 //	induction pointer recognition
 
-	clock_t start_t, end_t, clock_dif;
-	start_t = clock();
+	uint64_t start_t, end_t, clock_dif;
 
 	init( "s351 ");
-	start_t = clock();
+	start_t = rdtsc();
 
-	for (int nl = 0; nl < REPETITIONS; nl++) {
+
 		float* __restrict__ A = a;
 		float* __restrict__ B = b;
 		float* __restrict__ C = c;
@@ -21,10 +20,9 @@ int s1351()
 			B++;
 			C++;
 		}
-		dummy(a, b, c, d, e, aa, bb, cc, 0.);
-	}
-	end_t = clock(); clock_dif = end_t - start_t;
-	printf("S1351\t %8d   %8ld   ", REPETITIONS, clock_dif);
+		
+	end_t = rdtsc(); clock_dif = end_t - start_t;
+	printf("S1351\t %8ld   ", clock_dif);
 	check(1);
 	return 0;
 }

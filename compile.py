@@ -2,45 +2,7 @@ import os
 import subprocess
 
 
-def get_repetitions():
-    repetitions = {}
-    with open("./repetitions.txt", "r") as f:
-        lines = f.readlines()
-        for line in lines:
-            items = line.split()
-            repetitions[items[0]] = int(items[1])
-    return repetitions
-
-
-repetitions = get_repetitions()
-loops = [loop for loop in repetitions.keys()]
-loops.sort()
-
-
-def gen_repetitions(time=32000):
-    for i in range(3):
-        for loop in loops:
-            if i != 0:
-                repetitions[loop] *= 10
-            else:
-                repetitions[loop] = 4
-        compile("aarch64-none-linux-gnu-gcc", exe=True, vec=False)
-        res = run_cmd(["./gcc-scalar.out"])
-        lines = res.split("\n")
-        avg = 0
-        for line in lines:
-            items = line.split()
-            if len(items) != 4 or items[0].lower() not in loops:
-                continue
-            items[0] = items[0].lower()
-            repetitions[items[0]] = max(1, int(time * int(items[1]) / max(1, int(items[2]))))
-            avg += int(items[2])
-        print("{}: avg time {}us".format(i, avg / len(loops)))
-        with open("./repetitions.txt", "w") as f:
-            for loop in loops:
-                f.write("{}\t{}\n".format(loop, repetitions[loop]))
-    print(res)
-    return
+loops = []
 
 
 def run_cmd(cmd):
@@ -166,9 +128,7 @@ def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
     else:
         flags, link_flags = get_llvm_flags(vec, sve, x64)
     outputs = []
-    flags.append("-DREPETITIONS=32")
     for loop in loops:
-        flags[-1] = "-DREPETITIONS={}".format(repetitions[loop])
         file = os.path.join("./src", loop + ".c")
         outputs.append(compile_one(CC, flags, file, exe))
     # get vectorization info
@@ -205,7 +165,10 @@ def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
         compile_one(CC, flags, "./main.2.c")
         # generate executable file
         compile_one(CC, flags, "./dummy.c")
-        cmd = ["aarch64-none-linux-gnu-gcc"]
+        if x64:
+            cmd = ["gcc"]
+        else:
+            cmd = ["aarch64-none-linux-gnu-gcc"]
         cmd.extend(link_flags)
         cmd.append("-o")
         outfile = "gcc-" if gcc else "llvm-"
@@ -225,7 +188,11 @@ def compile(CC, info=True, gcc=True, vec=True, sve=True, exe=True, x64=False):
 
 
 if __name__ == "__main__":
-#    gen_repetitions()
+    for _, _, files in os.walk("./src"):
+        for file in files:
+            if file[-1] == "c":
+                loops.append(file[:-2])
+    loops.sort()
     CC = "aarch64-none-linux-gnu-gcc"
     print("# aarch64 gcc scalar")
     compile(CC, vec=False, sve=False, exe=True)
