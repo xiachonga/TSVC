@@ -2,3 +2,8 @@
 *.s
 *.out
 main.2.c
+tmp*
+loops
+.vscode
+__pycache__
+

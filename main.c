@@ -838,7 +838,7 @@ int main(){
 	int* ip = (int *) memalign(16, LEN*sizeof(float));
 	float s1,s2;
 	set(ip, &s1, &s2);
-	printf("Loop \t   Repeat   Time(us)   Checksum\n");
+	printf("Loop \t Time(ns)   Time(ns)   Checksum\n");
 	fflush(stdout);
 	s000();		fflush(stdout);
 	s111();		fflush(stdout);
